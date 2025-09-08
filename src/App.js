@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PropertyDetail from "./pages/PropertyDetail";
+import Contracts from "./pages/Contracts";
+import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Header />
+            <main className="min-h-screen">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/property/:id" element={<PropertyDetail />} />
+
+                    <Route
+                        path="/contracts"
+                        element={
+                            <PrivateRoute>
+                                <Contracts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <PrivateRoute>
+                                <Profile />
+                            </PrivateRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/admin"
+                        element={
+                            <PrivateRoute role="admin">
+                                <AdminDashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                </Routes>
+            </main>
+            <Footer />
+        </Router>
+    );
 }
 
 export default App;

@@ -1,0 +1,113 @@
+{
+  "users": [
+    { "id": "u1", "name": "Nguyễn Văn Chủ", "username": "admin", "password": "123", "role": "admin" },
+    { "id": "u2", "name": "Trần Thị Thuê", "username": "user1", "password": "123", "role": "user" },
+    { "id": "u3", "name": "Lê Hoàng Anh", "username": "user2", "password": "123", "role": "user" },
+    { "id": "u4", "name": "Phạm Minh Tuấn", "username": "user3", "password": "123", "role": "user" },
+    { "id": "u5", "name": "Ngô Thị Lan", "username": "user4", "password": "123", "role": "user" }
+  ],
+  "properties": [
+    {
+      "id": "r1",
+      "name": "Phòng 101 - Chung cư A",
+      "description": "Phòng 25m2, có nội thất, gần trung tâm",
+      "address": "123 Lý Thường Kiệt, Q.10, TP.HCM",
+      "price": 5000000,
+      "status": "available",
+      "createdBy": "u1"
+    },
+    {
+      "id": "r2",
+      "name": "Phòng 202 - Chung cư B",
+      "description": "Phòng 30m2, view đẹp, yên tĩnh",
+      "address": "456 Nguyễn Trãi, Q.5, TP.HCM",
+      "price": 6000000,
+      "status": "rented",
+      "createdBy": "u1"
+    },
+    {
+      "id": "r3",
+      "name": "Phòng 303 - Chung cư C",
+      "description": "Phòng 28m2, đầy đủ tiện nghi",
+      "address": "789 Cách Mạng Tháng 8, Q.3, TP.HCM",
+      "price": 5500000,
+      "status": "available",
+      "createdBy": "u1"
+    },
+    {
+      "id": "r4",
+      "name": "Phòng 404 - Chung cư D",
+      "description": "Phòng 35m2, gần công viên, thoáng mát",
+      "address": "12 Phạm Văn Đồng, Thủ Đức, TP.HCM",
+      "price": 7000000,
+      "status": "available",
+      "createdBy": "u1"
+    },
+    {
+      "id": "r5",
+      "name": "Phòng 505 - Chung cư E",
+      "description": "Phòng 20m2, giá rẻ cho sinh viên",
+      "address": "90 Trần Hưng Đạo, Q.1, TP.HCM",
+      "price": 4000000,
+      "status": "rented",
+      "createdBy": "u1"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "c1",
+      "userId": "u2",
+      "propertyId": "r1",
+      "startDate": "2024-07-10",
+      "status": "pending",
+      "monthlyPayment": 5000000,
+      "paymentHistory": [
+        {
+          "month": "2024-08",
+          "paid": true,
+          "paidAt": "2024-08-01"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "userId": "u3",
+      "propertyId": "r2",
+      "startDate": "2024-06-01",
+      "status": "active",
+      "monthlyPayment": 6000000,
+      "paymentHistory": [
+        {
+          "month": "2024-07",
+          "paid": true,
+          "paidAt": "2024-07-01"
+        },
+        {
+          "month": "2024-08",
+          "paid": true,
+          "paidAt": "2024-08-01"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "userId": "u4",
+      "propertyId": "r5",
+      "startDate": "2024-05-15",
+      "status": "completed",
+      "monthlyPayment": 4000000,
+      "paymentHistory": [
+        {
+          "month": "2024-05",
+          "paid": true,
+          "paidAt": "2024-05-15"
+        },
+        {
+          "month": "2024-06",
+          "paid": true,
+          "paidAt": "2024-06-15"
+        }
+      ]
+    }
+  ]
+}
