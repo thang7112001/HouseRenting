@@ -1,12 +1,37 @@
 import { deleteProperty, updateProperty } from "../services/propertyService";
 import { useState } from "react";
+import { createContract } from "../services/contractService";
 
 export default function PropertyCard({ property, onDeleted, onUpdated }) {
     const user = JSON.parse(localStorage.getItem("user"));
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ ...property });
 
-    // Xóa
+    const handleRent = async () => {
+        if (!user) {
+            alert("Vui lòng đăng nhập để thuê phòng");
+            return;
+        }
+        if (property.status !== "available") {
+            alert("Phòng hiện không còn trống");
+            return;
+        }
+        try {
+            const newContract = {
+                userId: user.id,
+                propertyId: property.id,
+                startDate: new Date().toISOString().slice(0, 10),
+                status: "pending",
+                price: property.price,
+            };
+            await createContract(newContract);
+            onUpdated && onUpdated();
+            alert("Đã gửi yêu cầu thuê. Chờ admin duyệt.");
+        } catch (err) {
+            alert("Thuê thất bại ❌");
+        }
+    };
+
     const handleDelete = async () => {
         if (window.confirm("Bạn có chắc muốn xóa phòng này?")) {
             await deleteProperty(property.id);
@@ -14,7 +39,6 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
         }
     };
 
-    // Lưu khi sửa
     const handleSave = async () => {
         try {
             await updateProperty(property.id, formData);
@@ -25,7 +49,6 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
         }
     };
 
-    // Cancel
     const handleCancel = () => {
         setFormData({ ...property });
         setIsEditing(false);
@@ -124,6 +147,14 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
                                 Xóa
                             </button>
                         </div>
+                    )}
+                    {user && user.role === "user" && property.status === "available" && (
+                        <button
+                            onClick={handleRent}
+                            className="mt-2 bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
+                        >
+                            Thuê
+                        </button>
                     )}
                 </>
             )}

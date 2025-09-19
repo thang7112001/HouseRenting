@@ -1,4 +1,4 @@
-export default function ContractCard({ contract, user, onApprove, onReject }) {
+export default function ContractCard({ contract, user, onApprove, onReject, onDelete }) {
     return (
         <div className="bg-white shadow rounded p-4">
             <p><strong>Mã hợp đồng:</strong> {contract.id}</p>
@@ -26,6 +26,17 @@ export default function ContractCard({ contract, user, onApprove, onReject }) {
                         className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                     >
                         Từ chối
+                    </button>
+                </div>
+            )}
+
+            {user?.role === "user" && contract.status !== "active" && (
+                <div className="flex gap-2 mt-3">
+                    <button
+                        onClick={() => onDelete && onDelete(contract.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                    >
+                        Xóa
                     </button>
                 </div>
             )}

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { getContracts, getContractsByUser, updateContract } from "../services/contractService";
+import { getContracts, getContractsByUser, updateContract, deleteContract } from "../services/contractService";
+import { getPropertyById, updateProperty } from "../services/propertyService";
 import ContractCard from "../components/ContractCard";
 
 export default function Contracts() {
@@ -22,11 +23,37 @@ export default function Contracts() {
 
     const handleApprove = async (id) => {
         await updateContract(id, { status: "active" });
+        try {
+            const all = await getContracts();
+            const approved = all.data.find((c) => c.id === id);
+            if (approved?.propertyId) {
+                const propRes = await getPropertyById(approved.propertyId);
+                const property = propRes.data;
+                if (property.status !== "rented") {
+                    await updateProperty(property.id, { ...property, status: "rented" });
+                }
+            }
+        } catch (e) {
+            // best-effort: ignore
+        }
         loadContracts();
     };
 
     const handleReject = async (id) => {
-        await updateContract(id, { status: "cancelled" });
+        await updateContract(id, { status: "available" });
+        await deleteContract(id);
+        loadContracts();
+    };
+
+    const handleDelete = async (id) => {
+        const target = contracts.find((c) => c.id === id);
+        if (!target) return;
+        if (target.status === "active") {
+            alert("Hợp đồng đã duyệt không thể xóa");
+            return;
+        }
+        if (!window.confirm("Bạn có chắc muốn xóa hợp đồng này?")) return;
+        await deleteContract(id);
         loadContracts();
     };
 
@@ -50,6 +77,7 @@ export default function Contracts() {
                             user={user}
                             onApprove={handleApprove}
                             onReject={handleReject}
+                            onDelete={handleDelete}
                         />
                     ))}
                 </div>
