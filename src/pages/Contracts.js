@@ -2,9 +2,14 @@ import { useEffect, useState, useCallback } from "react";
 import { getContracts, getContractsByUser, updateContract, deleteContract } from "../services/contractService";
 import { getPropertyById, updateProperty } from "../services/propertyService";
 import ContractCard from "../components/ContractCard";
+import ComfirmModal from "../components/ComfirmModal";
 
 export default function Contracts() {
     const [contracts, setContracts] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
+    const [confirmApproveOpen, setConfirmApproveOpen] = useState(false);
+    const [confirmRejectOpen, setConfirmRejectOpen] = useState(false);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const loadContracts = useCallback(() => {
@@ -52,7 +57,6 @@ export default function Contracts() {
             alert("Hợp đồng đã duyệt không thể xóa");
             return;
         }
-        if (!window.confirm("Bạn có chắc muốn xóa hợp đồng này?")) return;
         await deleteContract(id);
         loadContracts();
     };
@@ -75,13 +79,61 @@ export default function Contracts() {
                             key={c.id}
                             contract={c}
                             user={user}
-                            onApprove={handleApprove}
-                            onReject={handleReject}
-                            onDelete={handleDelete}
+                            onApprove={(id) => { setSelectedId(id); setConfirmApproveOpen(true); }}
+                            onReject={(id) => { setSelectedId(id); setConfirmRejectOpen(true); }}
+                            onDelete={(id) => { setSelectedId(id); setConfirmDeleteOpen(true); }}
                         />
                     ))}
                 </div>
             )}
+
+            <ComfirmModal
+                open={confirmApproveOpen}
+                title="Duyệt hợp đồng"
+                message="Bạn có chắc chắn duyệt hợp đồng này?"
+                confirmText="Duyệt"
+                onConfirm={async () => { 
+                    setConfirmApproveOpen(false); 
+                    if (selectedId) await handleApprove(selectedId); 
+                    setSelectedId(null); 
+                }}
+                onCancel={() => { 
+                    setConfirmApproveOpen(false); 
+                    setSelectedId(null); 
+                }}
+            />
+
+            <ComfirmModal
+                open={confirmRejectOpen}
+                title="Từ chối hợp đồng"
+                message="Bạn có chắc chắn từ chối và xóa hợp đồng này?"
+                confirmText="Từ chối"
+                onConfirm={async () => { 
+                    setConfirmRejectOpen(false); 
+                    if (selectedId) await handleReject(selectedId); 
+                    setSelectedId(null); 
+                }}
+                onCancel={() => { 
+                    setConfirmRejectOpen(false); 
+                    setSelectedId(null); 
+                }}
+            />
+
+            <ComfirmModal
+                open={confirmDeleteOpen}
+                title="Xóa hợp đồng"
+                message="Bạn có chắc chắn muốn xóa hợp đồng này?"
+                confirmText="Xóa"
+                onConfirm={async () => { 
+                    setConfirmDeleteOpen(false); 
+                    if (selectedId) await handleDelete(selectedId); 
+                    setSelectedId(null); 
+                }}
+                onCancel={() => { 
+                    setConfirmDeleteOpen(false); 
+                    setSelectedId(null); 
+                }}
+            />
         </div>
     );
 }
