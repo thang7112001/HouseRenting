@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createContract } from "../services/contractService";
 import AddEditModal from "./AddEditModal";
 import ComfirmModal from "./ComfirmModal";
+import { Link } from "react-router-dom";
 
 export default function PropertyCard({ property, onDeleted, onUpdated }) {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -10,14 +11,24 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
     const [formData, setFormData] = useState({ ...property });
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [confirmRentOpen, setConfirmRentOpen] = useState(false);
+    const [infoOpen, setInfoOpen] = useState(false);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [infoMessage, setInfoMessage] = useState("");
+
+    const images = Array.isArray(property.images) ? property.images : [];
+    const cover = images.length > 0 ? images[0] : null;
 
     const handleRent = async () => {
         if (!user) {
-            alert("Vui lòng đăng nhập để thuê phòng");
+            setInfoTitle("Thông báo");
+            setInfoMessage("Vui lòng đăng nhập để thuê phòng");
+            setInfoOpen(true);
             return;
         }
         if (property.status !== "available") {
-            alert("Phòng hiện không còn trống");
+            setInfoTitle("Thông báo");
+            setInfoMessage("Phòng hiện không còn trống");
+            setInfoOpen(true);
             return;
         }
         try {
@@ -30,9 +41,13 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
             };
             await createContract(newContract);
             onUpdated && onUpdated();
-            alert("Đã gửi yêu cầu thuê. Chờ admin duyệt.");
+            setInfoTitle("Thành công");
+            setInfoMessage("Đã gửi yêu cầu thuê. Chờ admin duyệt.");
+            setInfoOpen(true);
         } catch (err) {
-            alert("Thuê thất bại ❌");
+            setInfoTitle("Lỗi");
+            setInfoMessage("Thuê thất bại ❌");
+            setInfoOpen(true);
         }
     };
 
@@ -47,7 +62,9 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
             setIsEditing(false);
             onUpdated && onUpdated(formData);
         } catch (err) {
-            alert("Cập nhật thất bại ❌");
+            setInfoTitle("Lỗi");
+            setInfoMessage("Cập nhật thất bại ❌");
+            setInfoOpen(true);
         }
     };
 
@@ -58,6 +75,15 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
 
     return (
         <div className="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2">
+            <div className="w-full h-40 bg-gray-100 rounded overflow-hidden">
+                {cover ? (
+                    <img src={cover} alt={property.name} className="w-full h-full object-cover" />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                        Chưa có hình
+                    </div>
+                )}
+            </div>
             {!isEditing ? (
                 <>
                     <h2 className="text-lg font-bold">{property.name}</h2>
@@ -92,13 +118,23 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
                             </button>
                         </div>
                     )}
-                    {user && user.role === "user" && property.status === "available" && (
-                        <button
-                            onClick={() => setConfirmRentOpen(true)}
-                            className="mt-2 bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
-                        >
-                            Thuê
-                        </button>
+                    {user && user.role === "user" && (
+                        <div className="mt-2 flex items-center gap-2">
+                            {property.status === "available" && (
+                                <button
+                                    onClick={() => setConfirmRentOpen(true)}
+                                    className="bg-indigo-600 text-white px-3 py-1 rounded hover:rounded-xl w-32"
+                                >
+                                    Thuê
+                                </button>
+                            )}
+                            <Link
+                                to={`/property/${property.id}`}
+                                className="bg-gray-200 text-gray-900 px-3 py-1 rounded hover:rounded-xl w-32 text-center"
+                            >
+                                Xem chi tiết
+                            </Link>
+                        </div>
                     )}
                 </>
             ) : null}
@@ -171,6 +207,15 @@ export default function PropertyCard({ property, onDeleted, onUpdated }) {
                     handleRent(); 
                 }}
                 onCancel={() => setConfirmRentOpen(false)}
+            />
+
+            <ComfirmModal
+                open={infoOpen}
+                title={infoTitle}
+                message={infoMessage}
+                confirmText="Đóng"
+                showCancel={false}
+                onConfirm={() => setInfoOpen(false)}
             />
             
         </div>

@@ -10,6 +10,9 @@ export default function Contracts() {
     const [confirmApproveOpen, setConfirmApproveOpen] = useState(false);
     const [confirmRejectOpen, setConfirmRejectOpen] = useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+    const [infoOpen, setInfoOpen] = useState(false);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [infoMessage, setInfoMessage] = useState("");
     const user = JSON.parse(localStorage.getItem("user"));
 
     const loadContracts = useCallback(() => {
@@ -54,7 +57,9 @@ export default function Contracts() {
         const target = contracts.find((c) => c.id === id);
         if (!target) return;
         if (target.status === "active") {
-            alert("Hợp đồng đã duyệt không thể xóa");
+            setInfoTitle("Thông báo");
+            setInfoMessage("Hợp đồng đã duyệt không thể xóa");
+            setInfoOpen(true);
             return;
         }
         await deleteContract(id);
@@ -133,6 +138,15 @@ export default function Contracts() {
                     setConfirmDeleteOpen(false); 
                     setSelectedId(null); 
                 }}
+            />
+
+            <ComfirmModal
+                open={infoOpen}
+                title={infoTitle}
+                message={infoMessage}
+                confirmText="Đóng"
+                showCancel={false}
+                onConfirm={() => setInfoOpen(false)}
             />
         </div>
     );
