@@ -2,7 +2,7 @@ import { deleteProperty, updateProperty } from "../services/propertyService";
 import { useState } from "react";
 import { createContract } from "../services/contractService";
 import AddEditModal from "./AddEditModal";
-import ComfirmModal from "./ComfirmModal";
+import ComfirmModal from "./ConfirmModal";
 import { Link } from "react-router-dom";
 
 export default function PropertyCard({ property, onDeleted, onUpdated }) {

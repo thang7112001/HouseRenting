@@ -9,6 +9,7 @@ import Contracts from "./pages/Contracts";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import PaymentHistory from "./pages/PaymentHistory";
 
 function App() {
     return (
@@ -43,6 +44,14 @@ function App() {
                         element={
                             <PrivateRoute role="admin">
                                 <AdminDashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/payments"
+                        element={
+                            <PrivateRoute>
+                                <PaymentHistory />
                             </PrivateRoute>
                         }
                     />

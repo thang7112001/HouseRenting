@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPropertyById } from "../services/propertyService";
 import { Link } from "react-router-dom";
-import ComfirmModal from "../components/ComfirmModal";
+import ComfirmModal from "../components/ConfirmModal";
 import { createContract } from "../services/contractService";
 import { useNavigate } from "react-router-dom";
 

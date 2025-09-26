@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProperties, createProperty, deleteProperty } from "../services/propertyService";
 import AddEditModal from "../components/AddEditModal";
-import ComfirmModal from "../components/ComfirmModal";
+import ComfirmModal from "../components/ConfirmModal";
 
 export default function AdminDashboard() {
     const [properties, setProperties] = useState([]);

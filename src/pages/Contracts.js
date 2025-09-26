@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { getContracts, getContractsByUser, updateContract, deleteContract } from "../services/contractService";
 import { getPropertyById, updateProperty } from "../services/propertyService";
 import ContractCard from "../components/ContractCard";
-import ComfirmModal from "../components/ComfirmModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function Contracts() {
     const [contracts, setContracts] = useState([]);
@@ -92,7 +92,7 @@ export default function Contracts() {
                 </div>
             )}
 
-            <ComfirmModal
+            <ConfirmModal
                 open={confirmApproveOpen}
                 title="Duyệt hợp đồng"
                 message="Bạn có chắc chắn duyệt hợp đồng này?"
@@ -108,7 +108,7 @@ export default function Contracts() {
                 }}
             />
 
-            <ComfirmModal
+            <ConfirmModal
                 open={confirmRejectOpen}
                 title="Từ chối hợp đồng"
                 message="Bạn có chắc chắn từ chối và xóa hợp đồng này?"
@@ -124,7 +124,7 @@ export default function Contracts() {
                 }}
             />
 
-            <ComfirmModal
+            <ConfirmModal
                 open={confirmDeleteOpen}
                 title="Xóa hợp đồng"
                 message="Bạn có chắc chắn muốn xóa hợp đồng này?"
@@ -140,7 +140,7 @@ export default function Contracts() {
                 }}
             />
 
-            <ComfirmModal
+            <ConfirmModal
                 open={infoOpen}
                 title={infoTitle}
                 message={infoMessage}

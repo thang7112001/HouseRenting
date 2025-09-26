@@ -13,9 +13,6 @@ export default function NewHeader() {
         localStorage.removeItem("user");
         navigate("/login");
     };
-
-    // --- Xây dựng danh sách items động ---
-    // Phần tử đầu tiên ('Trang chủ') sẽ được dùng cho cả link logo và mục menu đầu tiên.
     let navItems = [
         { label: "Trang chủ", href: "/" },
     ];
@@ -28,7 +25,8 @@ export default function NewHeader() {
     } else {
         navItems.push(
             { label: "Hợp đồng", href: "/contracts" },
-            { label: "Hồ sơ", href: "/profile" }
+            { label: "Hồ sơ", href: "/profile" },
+            { label: "Thanh toán", href: "/payments"}
         );
         if (user.role === "admin") {
             navItems.push({ label: "Quản trị", href: "/admin" });
