@@ -13,6 +13,8 @@ import PaymentHistory from "./pages/PaymentHistory";
 
 function App() {
     return (
+
+<div>
         <Router>
             <Header />
             <main className="min-h-screen">
@@ -59,6 +61,7 @@ function App() {
             </main>
             <Footer />
         </Router>
+</div>
     );
 }
 

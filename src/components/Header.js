@@ -2,7 +2,7 @@
 
 import { useNavigate, useLocation } from "react-router-dom";
 import PillNav from "../AnimationComponent/PillNav"; // Đảm bảo đường dẫn chính xác
-import logo from "../utils/home-logo.jpg";   // Thay thế bằng logo của bạn
+import logo from "../utils/air-bnb3.jpg";   // Thay thế bằng logo của bạn
 
 export default function NewHeader() {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -34,16 +34,16 @@ export default function NewHeader() {
     }
 
     return (
-        <header className="w-full flex justify-center items-center p-4 relative">
+        <header className="w-full flex justify-center items-center p-4 relative bg-[#246BCE]">
             <div className="container mx-auto flex justify-between items-center">
                 <PillNav
                     logo={logo}
                     items={navItems}
                     activeHref={location.pathname}
-                    baseColor="#000000"
-                    pillColor="#ffffff"
-                    hoveredPillTextColor="#ffffff"
-                    pillTextColor="#000000"
+                    baseColor="#89CFF0"
+                    pillColor="#1F305E"
+                    hoveredPillTextColor="#1F305E"
+                    pillTextColor="#89CFF0"
                 />
 
                 {user && (
